@@ -40,8 +40,7 @@ class Login extends Component {
                 <div> 
                     <div className='mt-5 row'>
                         <div className='col-sm-6 bg-info text-center'>
-                            <h1 className="mt-5">Tirta Medical Centre</h1>
-                            <h4 className="mt-3 mx-4 text-start">TMC is one of the pioneers in Medical Check Up, Laboratory, and COVID-19 Test in Indonesia with high capacity and professional staff, with services available at clinics, onsite, and Home Care.</h4>
+                            <h1 className="mt-5">Program HRIS</h1>
                         </div>
                         <div className='col-sm-5 mx-auto card bg-secondary'>
                             <div className='card-body bg-light'>
