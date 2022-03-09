@@ -24,7 +24,7 @@ class Home extends Component {
                             <button type="button" class="tombol btn btn-lg btn-primary my-4">Reschedule</button>
                     </div>
                 </div>
-                <div className='row' style={{position: "absolute", bottom: "0px",width: "100%"}}> 
+                <div className='row' style={{position: "absolute", bottom: "0px",width: "102%"}}> 
                     <div className='col-10 mx-auto'>
                         <Link to='/login'>
                             <button type="button" class="btn btn-lg btn-danger my-4" style={{width: "100%"}} onClick={this.logoutUser}>Log Out</button>
