@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 
 class History extends Component {
     constructor(props) {
@@ -7,38 +7,39 @@ class History extends Component {
         this.state = {
             data: [
                 {
-                    nama: "Gumilang",
-                    tanggal: "29 Desember 2020",
-                    alamat: "Jl. Kalimalang Ruko Bougenville Blok A/1A, Jakarta, DKI Jakarta",
-                    trans_id: "REG-20201212-1234",
-                    klinik: "Tirta Mega Kuningan",
-                    pasien: ["Bambang", "Gumilang", "Mega Aulia"]
+                    trans_id: "REG-11032022-1234",
+                    agenda: "Meeting Akhir Tahun",
+                    room: "Meeting Room 3",
+                    tanggal: "11 Maret 2022",
+                    participant: "10 Peserta",
+                    time: "08.00 ~ 09.00"
                 },
                 {
-                    nama: "Gumilang",
-                    tanggal: "29 Desember 2020",
-                    alamat: "Jl. Danau Sunter Utr Perk Sunter Permai BI A/16, Sunter Agung",
-                    trans_id: "REG-20201212-3221",
-                    klinik: "Tirta Kramat Raya",
-                    pasien: ["Gumilang", "Bambang", "Mega Aulia"]
+                    trans_id: "REG-11032022-1234",
+                    agenda: "Meeting Akhir Tahun",
+                    room: "Meeting Room 3",
+                    tanggal: "11 Maret 2022",
+                    participant: "10 Peserta",
+                    time: "08.00 ~ 09.00"
                 },
                 {
-                    nama: "Gumilang",
-                    tanggal: "28 Desember 2020",
-                    alamat: "Jl. Kalimalang Ruko Bougenville Blok A/1A, Jakarta, DKI Jakarta",
-                    trans_id: "REG-20201212-5332",
-                    klinik: "Tirta Mega Kuningan",
-                    pasien: ["Bambang", "Gumilang"]
+                    trans_id: "REG-11032022-1234",
+                    agenda: "Meeting Akhir Tahun",
+                    room: "Meeting Room 3",
+                    tanggal: "11 Maret 2022",
+                    participant: "10 Peserta",
+                    time: "08.00 ~ 09.00"
                 },
                 {
-                    nama: "Gumilang",
-                    tanggal: "29 Desember 2020",
-                    alamat: "Jl. Danau Sunter Utr Perk Sunter Permai BI A/16, Sunter Agung",
-                    trans_id: "REG-20201212-8676",
-                    klinik: "Tirta Mega Kuningan",
-                    pasien: ["John Doe", "Bambang", "Gumilang", "Mega Aulia", "Samsul"]
+                    trans_id: "REG-11032022-1234",
+                    agenda: "Meeting Akhir Tahun",
+                    room: "Meeting Room 3",
+                    tanggal: "11 Maret 2022",
+                    participant: "10 Peserta",
+                    time: "08.00 ~ 09.00"
                 },  
-            ]
+            ],
+            redirect: false
         };
     }
 
@@ -47,34 +48,46 @@ class History extends Component {
             return (
                 <Link to={'/detailhistory/' + data.trans_id} style={{textDecoration: "none", color: "black"}}>
                     <div className="card-title mt-2 border p-3">
-                        <div>{data.tanggal}</div>
+                        <div className="row mb-2">
+                        <div className='col-sm card-title'>
+                            <div  style={{fontWeight: "600"}}>{data.trans_id}</div>
+                        </div>
+                        <div className='col-sm'>{data.tanggal}</div>
+                        </div>
                         <div className="row mb-3">
                             <div className="col-sm-6">
-                                <div className='card-title'>
-                                    <div  style={{fontWeight: "600"}}>{data.nama}</div>
+                                <div className="row mb-2">
+                                    <div className="col-sm-4">
+                                        Room
+                                    </div>
+                                    <div className="col-sm-8">
+                                        {data.room}
+                                    </div>
                                 </div>
-                                <div>
-                                    {data.alamat}
+                                <div className="row mb-2">
+                                    <div className="col-sm-4">
+                                        Jam
+                                    </div>
+                                    <div className="col-sm-8">
+                                        {data.time}
+                                    </div>
                                 </div>
                             </div>
                             <div className="col-sm-6">
-                                <div className='card-title'>
-                                    <div  style={{fontWeight: "600"}}>{data.trans_id}</div>
+                                <div className="row mb-2">
+                                    <div className="col-sm-4">
+                                        Participant 
+                                    </div>
+                                    <div className="col-sm-8">
+                                        {data.participant}
+                                    </div>
                                 </div>
                                 <div className="row mb-2">
                                     <div className="col-sm-4">
-                                        Klinik
+                                        Agenda
                                     </div>
                                     <div className="col-sm-8">
-                                        {data.klinik}
-                                    </div>
-                                </div>
-                                <div className="row mb-2">
-                                    <div className="col-sm-4">
-                                        Pasien
-                                    </div>
-                                    <div className="col-sm-8">
-                                        {data.pasien[0]} and +{data.pasien.length-1} Patient
+                                        {data.agenda}
                                     </div>
                                 </div>
                             </div>
@@ -84,11 +97,23 @@ class History extends Component {
             )
         })
     }
+
+    setRedirect = () => {
+        this.setState({
+          redirect: true
+        })
+    }
+
+    redirectBooking = () => {
+        if (this.state.redirect) {
+            return <Redirect to='/' />
+        }
+    }
         
     render () {
         return (
             <div> 
-                <div className='p-5 row bg-secondary'>
+                <div className='p-5 row bg-secondary' onClick={()=>this.setRedirect()}>
                     <div className='col-sm-11 mx-auto border p-4 rounded-3 bg-white'>
                         <h1 className="">My Appointment</h1>
                         <h4 className="mt-3 text-start">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</h4>
@@ -96,6 +121,7 @@ class History extends Component {
                             <input type="text" placeholder="Search" aria-label="Username" aria-describedby="basic-addon1"/>
                         </div>
                         {this.renderHistory()}
+                        {this.redirectBooking()}
                     </div>
                 </div>
             </div>

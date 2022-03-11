@@ -1,10 +1,10 @@
 import cookies from 'universal-cookie'
-import axios from 'axios'
-import Port from '../port'
+// import axios from 'axios'
+// import Port from '../port'
 
 const cookie = new cookies()
 
-export const onLoginUser = (email, password) => {
+export const onLoginUser = (email) => {
     return (dispatch) => {
     //     axios.post(
     //         Port,

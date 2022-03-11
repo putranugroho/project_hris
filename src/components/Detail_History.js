@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
-import axios from 'axios'
-
-import port from '../port'
+import {Link} from 'react-router-dom'
 
 class Detail_History extends Component {
     constructor(props) {
@@ -9,63 +7,30 @@ class Detail_History extends Component {
         this.state = {
             history : {
                         pemesan: {
-                            nama: "Gumilang Febrian",
-                            no_hp: "+628566300022",
-                            tanggal: "29 Desember 2020",
-                            email: "febrian.gumilang@example.com",
-                            berkas: "Hanya Softcopy",
-                            alamat: "Jl. Kalimalang Ruko Bougenville Blok A/1A, Jakarta, DKI Jakarta",
-                            trans_id: "REG-20201212-1234",
-                            klinik: "Tirta Mega Kuningan",
+                            trans_id: "REG-11032022-1234",
+                            agenda: "Meeting Akhir Tahun",
+                            room: "Meeting Room 3",
+                            tanggal: "11 Maret 2022",
+                            participant: "10 Peserta",
+                            addon: "Tv, Speaker, Mic",
+                            time: "08.00 ~ 09.00",
                             note: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. At varius vel pharetra vel turpis nunc eget lorem dolor. Orci sagittis eu volutpat odio facilisis mauris sit amet. Nunc lobortis mattis aliquam faucibus purus in massa. Elementum tempus egestas sed sed risus pretium quam. Mus mauris vitae ultricies leo integer malesuada nunc vel risus. Maecenas accumsan lacus vel facilisis volutpat est velit. Tellus cras adipiscing enim eu turpis egestas pretium aenean. Ut enim blandit volutpat maecenas volutpat blandit aliquam etiam erat. Massa tincidunt nunc pulvinar sapien et ligula ullamcorper malesuada. Integer enim neque volutpat ac. Turpis egestas maecenas pharetra convallis posuere morbi. Ultricies lacus sed turpis tincidunt id aliquet risus feugiat in. Cursus vitae congue mauris rhoncus."
                         },
-                        pasien: [
+                        participant: [
                             {
                                 nama: "Bambang Sutoyo",
-                                gender: "Laki - Laki",
-                                nik: "31323121847321",
-                                tanggal_lhr: "12/21/1960",
-                                tempat_lhr: "Depok",
-                                pekerjaan: "Karyawan",
-                                alamat: "Jl. Kalimalang Ruko Bougenville Blok A/1A, Jakarta, DKI Jakarta",
-                                service: ["Swab PCR Same Day, ", "Rapid Swab Antigen, ", "Tes Serologi"]
+                                email: "bambang.sutoyo@gmail.com",
+                                no_hp: "081212349876"
                             },
                             {
                                 nama: "Gumilang Febrian",
-                                gender: "Perempuan",
-                                nik: "31323121847321",
-                                tanggal_lhr: "12/21/1960",
-                                tempat_lhr: "Depok",
-                                pekerjaan: "Karyawan",
-                                alamat: "Jl. Kalimalang Ruko Bougenville Blok A/1A, Jakarta, DKI Jakarta",
-                                service: ["Swab PCR Same Day, ", "Rapid Swab Antigen"]
+                                email: "gumilang.febrian@gmail.com",
+                                no_hp: "081298761234"
                             },
                             {
                                 nama: "Mega Aulia",
-                                gender: "Perempuan",
-                                nik: "31323121847321",
-                                tanggal_lhr: "12/21/1960",
-                                tempat_lhr: "Depok",
-                                pekerjaan: "Karyawan",
-                                alamat: "Jl. Kalimalang Ruko Bougenville Blok A/1A, Jakarta, DKI Jakarta",
-                                service: ["Rapid Swab Antigen"]
-                            }
-                        ],
-                        detail_pesanan: [
-                            {
-                                nama: "Swab PCR Same Day",
-                                count: 2,
-                                value: 2200000
-                            },
-                            {
-                                nama: "Rapid Swab Antigen",
-                                count: 3,
-                                value: 750000
-                            },
-                            {
-                                nama: "Tes Serologi",
-                                count: 1,
-                                value: 250000
+                                email: "mega.aulia@gmail.com",
+                                no_hp: "081243216789"
                             }
                         ]
                     },
@@ -73,17 +38,6 @@ class Detail_History extends Component {
                 total_amount: 0
             }
     }
-    
-    componentDidMount(){
-        // let trans_id = this.props.match.params.trans_id
-        
-        // axios.get(port + trans_id)
-        // .then(res => {
-            //     this.setState({history: res.data})
-            // })
-        this.updateTotal()
-    }
-
 
     handleClick = (index) => {
         if (index === this.state.isDisplay) {
@@ -94,62 +48,57 @@ class Detail_History extends Component {
     }
 
     renderPemesan = () => {
-        var {nama, no_hp, email, tanggal, berkas, alamat, trans_id, klinik, note} = this.state.history.pemesan
+        var {agenda, room, participant, tanggal, addon, time, note, trans_id} = this.state.history.pemesan
         return (
             <div className='mx-auto card mb-3'>
                 <div className='card-body'>
                     <div className="card-title d-flex">
-                    <h1 style={{marginRight:"20px"}}>Register</h1>
-                    <h1>({trans_id})</h1>
+                        <h1 style={{marginRight:"20px"}}>Register</h1>
+                        <h1>({trans_id})</h1>
+                        <Link to={"/history"} style={{marginLeft: "auto"}}><div>X</div></Link>
                     </div>
                     <div className="row">
                         <div className="col-sm-2">
-                            Nama PIC
+                            <b>Tanggal</b>
                         </div>
                         <div className="col-sm-3">
-                            No Handphone
+                            <b>Agenda</b>
                         </div>
                         <div className="col-sm-4">
-                            Email
+                            <b>Meeting Room</b>
                         </div>
                         <div className="col-sm-3">
-                            Apakah Anda memerlukan hardcopy?
+                            <b>Jam</b>
                         </div>
                     </div>
                     <div className="row mb-4">
                         <div className="col-sm-2">
-                            {nama}
-                        </div>
-                        <div className="col-sm-3">
-                            {no_hp}
-                        </div>
-                        <div className="col-sm-4">
-                            {email}
-                        </div>
-                        <div className="col-sm-3">
-                            {berkas}
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-sm-2">
-                            Klinik
-                        </div>
-                        <div className="col-sm-3">
-                            Tanggal Home Care
-                        </div>
-                        <div className="col-sm-4">
-                            Alamat
-                        </div>
-                    </div>
-                    <div className="row mb-4">
-                        <div className="col-sm-2">
-                            {klinik}
-                        </div>
-                        <div className="col-sm-3">
                             {tanggal}
                         </div>
+                        <div className="col-sm-3">
+                            {agenda}
+                        </div>
                         <div className="col-sm-4">
-                            {alamat}
+                            {room}
+                        </div>
+                        <div className="col-sm-3">
+                            {time}
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-sm-2">
+                            <b>Jumlah Peserta</b>
+                        </div>
+                        <div className="col-sm-3">
+                            <b>Add On</b>
+                        </div>
+                    </div>
+                    <div className="row mb-4">
+                        <div className="col-sm-2">
+                            {participant}
+                        </div>
+                        <div className="col-sm-3">
+                            {addon}
                         </div>
                     </div>
                     <div className="">
@@ -163,102 +112,35 @@ class Detail_History extends Component {
         )
     }
 
-    renderPasien = () => {
-        var pasien = this.state.history.pasien
-        return pasien.map(data => {
+    renderParticipant = () => {
+        var participant = this.state.history.participant
+        return participant.map(data => {
             return (
                 <div>
-                    <button className="btn btn-outline-secondary dropdown-toggle mb-3" type="button" data-bs-toggle="dropdown" style={{width:"100%",textAlign: "left"}} onClick={ ()=> this.handleClick(pasien.indexOf(data)) }>{data.nama}</button>
-                    <div className={this.state.isDisplay == pasien.indexOf(data) ? 'd-block' : 'd-none'}>
-                        <div className="row">
+                    <button className="btn btn-outline-secondary dropdown-toggle mb-3" type="button" data-bs-toggle="dropdown" style={{width:"100%",textAlign: "left"}} onClick={ ()=> this.handleClick(participant.indexOf(data)) }>{data.nama}</button>
+                    <div className={this.state.isDisplay == participant.indexOf(data) ? 'd-block' : 'd-none'}>
+                        <div className="row mb-3    ">
                             <div className="col-sm-2">
-                                Jenis Kelamin
+                                <b>Email :</b>
                             </div>
                             <div className="col-sm-3">
-                                Tempat Lahir
+                                {data.email}
                             </div>
                             <div className="col-sm-4">
-                                Tanggal Lahir
+                                <b>No Hp :</b>
                             </div>
                             <div className="col-sm-3">
-                                Service
-                            </div>
-                        </div>
-                        <div className="row mb-4">
-                            <div className="col-sm-2">
-                                {data.gender}
-                            </div>
-                            <div className="col-sm-3">
-                                {data.tempat_lhr}
-                            </div>
-                            <div className="col-sm-4">
-                                {data.tanggal_lhr}
-                            </div>
-                            <div className="col-sm-3">
-                                {data.service}
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-sm-2">
-                                NIK (KTP)
-                            </div>
-                            <div className="col-sm-3">
-                                Pekerjaan
-                            </div>
-                            <div className="col-sm-4">
-                                Alamat
-                            </div>
-                        </div>
-                        <div className="row mb-4">
-                            <div className="col-sm-2">
-                                {data.nik}
-                            </div>
-                            <div className="col-sm-3">
-                                {data.pekerjaan}
-                            </div>
-                            <div className="col-sm-4">
-                                {data.alamat}
+                                {data.no_hp}
                             </div>
                         </div>
                     </div>
                 </div>
             )
         })
-    }
-
-    renderDetail = () => {
-        var detail_pesanan = this.state.history.detail_pesanan
-        return detail_pesanan.map(detail => {
-            return (
-                <div className="d-flex navbar border-bottom border-secondary py-2">
-                    <div className="col-7">
-                        {detail.nama}
-                    </div>
-                    <div className="col-3">
-                        X {detail.count}
-                    </div>
-                    <div className="col-2">
-                        Rp. {detail.value.toLocaleString('id-ID')}
-                    </div>
-                </div>
-            )
-        })
-        
-    }
-
-    updateTotal = () => {
-        var detail_pesanan = this.state.history.detail_pesanan
-        var total_amount = 0
-
-        for (let i = 0; i < detail_pesanan.length; i++) {
-            total_amount = total_amount + detail_pesanan[i].value
-        }
-        
-        this.setState({total_amount})
     }
     
     render() {
-        var pasien = this.state.history.pasien
+        var participant = this.state.history.participant
         var total_amount = this.state.total_amount
             return (
                 <div className='card-body'>     
@@ -266,17 +148,17 @@ class Detail_History extends Component {
                     <div className='mx-auto card mb-3'>
                         <div className='card-body'> 
                             <div className="card-title d-flex">
-                                <h1 style={{marginRight:"20px"}}>Pasien</h1>
-                                <h1>({pasien.length} Pasien)</h1>
+                                <h1 style={{marginRight:"20px"}}>Participant</h1>
+                                <h1>({participant.length} Participant)</h1>
                             </div>
-                        {this.renderPasien()}
+                        {this.renderParticipant()}
                         </div>
                     </div>
-                    <div className='mx-auto card mb-3'>
+                    {/* <div className='mx-auto card mb-3'>
                         <div className='card-body'> 
                             <div className="card-title d-flex">
-                                <h1 style={{marginRight:"20px"}}>Pasien</h1>
-                                <h1>({pasien.length} Pasien)</h1>
+                                <h1 style={{marginRight:"20px"}}>Participant</h1>
+                                <h1>({participant.length} Participant)</h1>
                             </div>
                             {this.renderDetail()}
                             <div className="d-flex navbar py-2">
@@ -288,7 +170,7 @@ class Detail_History extends Component {
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                     {/* <img className='list' alt='' style={{width: 150, height: 150}} src={`http://localhost:2019/products/avatar/${image}`}/>
                     <div className='card-body'>
                         <h5 className='card-title'>{product_name}</h5>

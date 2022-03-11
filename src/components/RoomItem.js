@@ -24,12 +24,14 @@ class RoomItem extends Component {
     }
     
     selectButton = (ruangan) => {
-        let ruangan_id = parseInt(ruangan.toString().substring(2,4))
+        let id = parseInt(ruangan.toString().substring(2,4))
+        let ruangan_id = parseInt(ruangan.toString().substring(0,1))
         let service = this.state.selected
         if (document.getElementById(ruangan).classList.contains('btn-outline-primary')){
             document.getElementById(ruangan).className = "btn btn-lg btn-primary m-2";
             let selectedItem = {
-                id: ruangan_id,
+                id,
+                ruangan_id,
                 value: `Room ${this.props.index} | ${this.selectTime(ruangan_id)}`
             }
             service.push(selectedItem)

@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-import axios from 'axios'
 import {Link, Redirect} from 'react-router-dom'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -205,6 +204,17 @@ class Booking_Room extends Component {
         })
     }
 
+    renderFasilitas = () => {
+        return this.state.AddOn.map(addon => {
+            return (
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id={addon} value={addon}/>
+                    <label class="form-check-label" for={addon}>{addon}</label>
+                </div>
+            )
+        })
+    }
+
     addPeserta = () => {
         let newPeserta = []
         let addPeserta = this.state.peserta.length+1
@@ -218,8 +228,9 @@ class Booking_Room extends Component {
     //     if (this.state.detail_service.length != 0) {
     //         return (
     //             <div> 
-    //                 <div className='border-bottom border-secondary card-title'>
-    //                     <h1>Add On</h1>
+    //                 <div className='border-bottom border-secondary card-title d-flex'>
+    //                     <h1>Additional Request</h1>
+    //                     <span className='align-self-center mx-3'>Kebutuhan tambahan</span>
     //                 </div>
     //                 <div className="btn-group" role="group" aria-label="Basic checkbox toggle button group">
     //                     {this.renderAddon()}    
@@ -287,31 +298,47 @@ class Booking_Room extends Component {
                 <div className='mt-3 row'> 
                     <div className='col-sm-10 mx-auto card'>
                         <div className='card-body'>
-                            <div className='border-bottom border-secondary card-title'>
-                                <h1>Register</h1>
+                            <div className='border-bottom border-secondary card-title d-flex' >
+                                <h2>Registration</h2>
+                                <span className='align-self-center mx-3'>Pilih Tanggal Pengunaan Ruangan</span>
                             </div>
                             <div className="row mb-3">
                                 <div className="col-sm-12">
                                     {this.renderCalender()}
                                 </div>
                             </div>
-                            <div className='border-bottom border-secondary card-title'>
-                                <h1>Ruangan</h1>
+                            <div className='border-bottom border-secondary card-title d-flex'>
+                                <h2>Agenda Meeting</h2>
+                                <span className='align-self-center mx-3'>Jelaskan agenda/ topik meeting</span>
+                            </div>
+                            <form className='input-group mb-3'>
+                                <input className='form-control' type="text" ref={(input)=>{this.nama = input}}/>
+                            </form>
+                            <div className='border-bottom border-secondary card-title d-flex'>
+                                <h2>Meeting Room</h2>
+                                <span className='align-self-center mx-3'>Pilih Ruang dan Waktu</span>
                             </div>
                             {this.renderRuangan()}
-                            <div className='border-bottom border-secondary card-title'>
-                                <h1>Peserta</h1>
+                            <div className='border-bottom border-secondary card-title d-flex'>
+                                <h2>Meeting Participants</h2>
+                                <span className='align-self-center mx-3'>Jumlah dan data peserta</span>
                             </div>
+                            <div className='card-title'>
+                                <div  style={{fontWeight: "600"}}>Jumlah Peserta</div>
+                            </div>
+                            <form className='input-group mb-3'>
+                                <input className='form-control' type="text" ref={(input)=>{this.nama = input}}/>
+                            </form>
                             {this.renderPeserta()}
                             <button className='btn btn-primary my-3' onClick={this.addPeserta}>
                                 Tambah Peserta
                             </button>
                             {/* {this.Addon()} */}
-                            <div className='border-bottom border-secondary card-title'>
-                                <h1>Detail Pesanan</h1>
+                            <div className='border-bottom border-secondary card-title d-flex'>
+                                <h2>Additional Request</h2>
                             </div>
                             <div className="p-3">
-                                {this.renderService()}
+                                {this.renderFasilitas()}
                             </div>
                             <Link to={"/"}>
                                 <button className='btn btn-danger mx-3'>Cancel</button>

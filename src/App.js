@@ -6,6 +6,9 @@ import './App.css';
 
 import Login from './components/Login'
 import Booking_Room from './components/Booking_Room'  
+import Booking_Confirm from './components/Booking_Confirm'
+import Booking_Reschedule from './components/Booking_Reschedule'
+import Booking_Invitation from './components/Booking_Invitation'
 import Home from './components/Home'
 import History from './components/History'
 import Detail_History from './components/Detail_History'
@@ -45,6 +48,9 @@ class App extends React.Component {
           <Route path="/login" exact component={Login}/>
           <Route path="/" exact component={Home}/>
           <Route path="/booking" exact component={Booking_Room}/>
+          <Route path="/booking_confirm" exact component={Booking_Confirm}/>
+          <Route path="/booking_reschedule" exact component={Booking_Reschedule}/>
+          <Route path="/booking_invitation" exact component={Booking_Invitation}/>
           <Route path="/history" exact component={History}/>
           <Route path="/detailhistory/:trans_id" exact component={Detail_History}/>
           {this.renderRedirect()}

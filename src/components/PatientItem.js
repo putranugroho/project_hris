@@ -101,6 +101,12 @@ class PatientItem extends Component {
                         <input className='form-control' type="text" ref={(input)=>{this.email = input}}/>
                     </form>
                     </div>
+                    <div className='card-title'>
+                        <div  style={{fontWeight: "600"}}>Nomer Handphone</div>
+                    <form className='input-group mb-3'>
+                        <input className='form-control' type="text" ref={(input)=>{this.hp = input}}/>
+                    </form>
+                    </div>
                 </div>
             </div>
         )
