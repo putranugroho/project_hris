@@ -45,6 +45,7 @@ class Booking_Reschedule extends Component {
                     time: "08.00 ~ 09.00"
                 },  
             ],
+            jam: ["08.00","09.00","12.00","13.00","14.00","15.00","19.00","20.00","21.00"],
             startDate: new Date(),
             redirect: false,
             modal: false
@@ -98,6 +99,14 @@ class Booking_Reschedule extends Component {
         }
     }
 
+    renderJam = () => {
+        return this.state.jam.map(jam =>{
+            return (
+                <option value={jam}>{jam}</option>
+            )
+        })
+    }
+
     renderReschedule = () => {
         return this.state.data.map(data =>{
             return (
@@ -135,12 +144,26 @@ class Booking_Reschedule extends Component {
                         <div className='col-4 borders'>
                         </div>
                         <div className='col-3    border-left'>
-                            <button className='btn btn-success' onClick={this.toggle}>Reschedule</button>
+                            <button className='btn btn-success m-2' onClick={this.toggle}>Reschedule</button>
+                            <button className='btn btn-danger m-2' style={{width:"90px"}}>Cancel</button>
                         </div>
                         <Modal isOpen={this.state.modal} toggle={this.toggle}>
                             <ModalHeader toggle={this.toggle}>Reschedule</ModalHeader>
                             <ModalBody>
-                            {this.renderCalender()}
+                            <div className='d-block'>
+                                {this.renderCalender()}
+                                <div class="input-group mt-3 mb-3">
+                                    <div class="input-group-prepend" style={{width: "20%"}}>
+                                        <label class="input-group-text" for="inputGroupSelect01">Jam</label>
+                                    </div>
+                                    <select class="custom-select" id="inputGroupSelect01" style={{width: "40%"}}>
+                                        {this.renderJam()}
+                                    </select>
+                                    <select class="custom-select" id="inputGroupSelect01" style={{width: "40%"}}>
+                                        {this.renderJam()}
+                                    </select>
+                                </div>
+                            </div>
                             </ModalBody>
                             <ModalFooter>
                                 <Button color="success" onClick={this.toggle}>Confirm</Button>

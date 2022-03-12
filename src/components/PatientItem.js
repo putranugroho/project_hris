@@ -87,7 +87,7 @@ class PatientItem extends Component {
     render() {
         return (
             <div className="mb-3"> 
-                <button className="btn btn-outline-secondary dropdown-toggle mb-3" type="button" data-bs-toggle="dropdown" style={{width:"100%",textAlign: "left"}} onClick={ this.handleClick }>Pasien {this.props.index}</button>
+                <button className="btn btn-outline-secondary dropdown-toggle mb-3" type="button" data-bs-toggle="dropdown" style={{width:"100%",textAlign: "left"}} onClick={ this.handleClick }>Peserta {this.props.index}</button>
                 <div className={this.props.isDisplay ? 'd-block' : 'd-none'}>
                     <div className='card-title'>
                         <div  style={{fontWeight: "600"}}>Nama Lengkap</div>

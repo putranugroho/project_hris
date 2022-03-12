@@ -23,6 +23,7 @@ class Home extends Component {
                             <Link to={"/booking_confirm"}><button type="button" class="tombol btn btn-lg btn-primary my-4">Booking Confirmation</button></Link>
                             <Link to={"/booking_invitation"}><button type="button" class="tombol btn btn-lg btn-primary my-4">Meeting Invitation / Reminder</button></Link>
                             <Link to={"/booking_reschedule"}><button type="button" class="tombol btn btn-lg btn-primary my-4">Reschedule / Cancelation</button></Link>
+                            <Link to={"/setup"}><button type="button" class="tombol btn btn-lg btn-primary my-4">Setup</button></Link>
                     </div>
                 </div>
                 <div className='row'> 

@@ -83,7 +83,7 @@ class RoomItem extends Component {
                         Kapasitas {this.props.kapasitas}
                     </div>
                     <div>
-                        Features : 
+                        Facilities : 
                     </div>
                     {this.renderFeatures()}
                     <button id={`${this.props.index}-1`} type="button" className="btn btn-lg btn-outline-primary m-2" onClick={()=> this.selectButton(`${this.props.index}-1`)}>08.00</button>

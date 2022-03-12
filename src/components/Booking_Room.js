@@ -16,7 +16,6 @@ class Booking_Room extends Component {
             peserta: [],
             activePeserta: null,
             AddOn: ["TV","Speaker","Infocus","Mic","Mixer"],
-            newAddOn: [],
             ruangan: [
                 {
                     id: 1,
@@ -294,60 +293,82 @@ class Booking_Room extends Component {
 
     render (){
         return (
-            <div> 
-                <div className='mt-3 row'> 
-                    <div className='col-sm-10 mx-auto card'>
-                        <div className='card-body'>
-                            <div className='border-bottom border-secondary card-title d-flex' >
-                                <h2>Registration</h2>
-                                <span className='align-self-center mx-3'>Pilih Tanggal Pengunaan Ruangan</span>
-                            </div>
-                            <div className="row mb-3">
-                                <div className="col-sm-12">
-                                    {this.renderCalender()}
-                                </div>
-                            </div>
-                            <div className='border-bottom border-secondary card-title d-flex'>
-                                <h2>Agenda Meeting</h2>
-                                <span className='align-self-center mx-3'>Jelaskan agenda/ topik meeting</span>
-                            </div>
-                            <form className='input-group mb-3'>
-                                <input className='form-control' type="text" ref={(input)=>{this.nama = input}}/>
-                            </form>
-                            <div className='border-bottom border-secondary card-title d-flex'>
-                                <h2>Meeting Room</h2>
-                                <span className='align-self-center mx-3'>Pilih Ruang dan Waktu</span>
-                            </div>
-                            {this.renderRuangan()}
-                            <div className='border-bottom border-secondary card-title d-flex'>
-                                <h2>Meeting Participants</h2>
-                                <span className='align-self-center mx-3'>Jumlah dan data peserta</span>
-                            </div>
-                            <div className='card-title'>
-                                <div  style={{fontWeight: "600"}}>Jumlah Peserta</div>
-                            </div>
-                            <form className='input-group mb-3'>
-                                <input className='form-control' type="text" ref={(input)=>{this.nama = input}}/>
-                            </form>
-                            {this.renderPeserta()}
-                            <button className='btn btn-primary my-3' onClick={this.addPeserta}>
-                                Tambah Peserta
-                            </button>
-                            {/* {this.Addon()} */}
-                            <div className='border-bottom border-secondary card-title d-flex'>
-                                <h2>Additional Request</h2>
-                            </div>
-                            <div className="p-3">
-                                {this.renderFasilitas()}
-                            </div>
-                            <Link to={"/"}>
-                                <button className='btn btn-danger mx-3'>Cancel</button>
-                            </Link>
-                            <button className='btn btn-primary my-3' onClick={this.setRedirect}>
-                                Kirim
-                            </button>
-                            {this.renderRedirect()}
+            <div className='mt-3 row'> 
+                <div className='col-sm-10 mx-auto card'>
+                    <div className='card-body'>
+                        <div className='border-bottom border-secondary card-title d-flex' >
+                            <h2>Registration</h2>
+                            <span className='align-self-center mx-3'>Pilih Tanggal Pengunaan Ruangan</span>
                         </div>
+                        <div className="row mb-3">
+                            <div className="col-sm-12">
+                                {this.renderCalender()}
+                            </div>
+                        </div><div className='border-bottom border-secondary card-title d-flex'>
+                            <h2>PIC Meeting</h2>
+                            <span className='align-self-center mx-3'>Masukan Nama dan Jabatan PIC Meeting</span>
+                        </div>
+                        <div className='d-block'>
+                            <div className='card-title'>
+                                <div  style={{fontWeight: "600"}}>Nama Lengkap PIC</div>
+                            </div>
+                            <form className='input-group mb-3'>
+                                <input className='form-control' type="text" ref={(input)=>{this.nama = input}}/>
+                            </form>
+                            <div className='card-title'>
+                                <div  style={{fontWeight: "600"}}>Jabatan</div>
+                            <form className='input-group mb-3'>
+                                <input className='form-control' type="text" ref={(input)=>{this.jabatan = input}}/>
+                            </form>
+                            </div>
+                        </div>
+                        <div className='border-bottom border-secondary card-title d-flex'>
+                            <h2>Agenda Meeting</h2>
+                            <span className='align-self-center mx-3'>Jelaskan agenda/ topik meeting</span>
+                        </div>
+                        <form className='input-group mb-3'>
+                            <input className='form-control' type="text" ref={(input)=>{this.nama = input}}/>
+                        </form>
+                        <div className='border-bottom border-secondary card-title d-flex'>
+                            <h2>Meeting Room</h2>
+                            <span className='align-self-center mx-3'>Pilih Ruang dan Waktu</span>
+                        </div>
+                        {this.renderRuangan()}
+                        <div className='border-bottom border-secondary card-title d-flex'>
+                            <h2>Meeting Participants</h2>
+                            <span className='align-self-center mx-3'>Jumlah dan data peserta</span>
+                        </div>
+                        <div className='card-title'>
+                            <div  style={{fontWeight: "600"}}>Jumlah Peserta</div>
+                        </div>
+                        <form className='input-group mb-3'>
+                            <input className='form-control' type="text" ref={(input)=>{this.nama = input}}/>
+                        </form>
+                        {this.renderPeserta()}
+                        <button className='btn btn-primary my-3' onClick={this.addPeserta}>
+                            Tambah Peserta
+                        </button>
+                        {/* {this.Addon()} */}
+                        <div className='border-bottom border-secondary card-title d-flex'>
+                            <h2>Additional Request</h2>
+                            <span className='align-self-center mx-3'>Kebutuhan tambahan</span>
+                        </div>
+                        <div className="p-3">
+                            {this.renderFasilitas()}
+                            <div className='card-title'>
+                                <div  style={{fontWeight: "600"}}>Lain-lain : </div>
+                            </div>
+                            <form className='input-group mb-3'>
+                                <input className='form-control' type="text" ref={(input)=>{this.nama = input}}/>
+                            </form>
+                        </div>
+                        <Link to={"/"}>
+                            <button className='btn btn-danger mx-3'>Cancel</button>
+                        </Link>
+                        <button className='btn btn-primary my-3' onClick={this.setRedirect}>
+                            Kirim
+                        </button>
+                        {this.renderRedirect()}
                     </div>
                 </div>
             </div>

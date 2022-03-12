@@ -7,6 +7,8 @@ class Detail_History extends Component {
         this.state = {
             history : {
                         pemesan: {
+                            pic: "Bambang Sutoyo",
+                            jabatan: "Manager",
                             trans_id: "REG-11032022-1234",
                             agenda: "Meeting Akhir Tahun",
                             room: "Meeting Room 3",
@@ -48,7 +50,7 @@ class Detail_History extends Component {
     }
 
     renderPemesan = () => {
-        var {agenda, room, participant, tanggal, addon, time, note, trans_id} = this.state.history.pemesan
+        var {pic,jabatan,agenda, room, participant, tanggal, addon, time, note, trans_id} = this.state.history.pemesan
         return (
             <div className='mx-auto card mb-3'>
                 <div className='card-body'>
@@ -59,16 +61,44 @@ class Detail_History extends Component {
                     </div>
                     <div className="row">
                         <div className="col-sm-2">
+                            <b>PIC</b>
+                        </div>
+                        <div className="col-sm-3">
+                            <b>Jabatan</b>
+                        </div>
+                        <div className="col-sm-3">
+                            <b>Meeting Room</b>
+                        </div>
+                        <div className="col-sm-4">
+                            <b>Agenda</b>
+                        </div>
+                    </div>
+                    <div className="row mb-4">
+                        <div className="col-sm-2">
+                            {pic}
+                        </div>
+                        <div className="col-sm-3">
+                            {jabatan}
+                        </div>
+                        <div className="col-sm-3">
+                            {room}
+                        </div>
+                        <div className="col-sm-4">
+                            {agenda}
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-sm-2">
                             <b>Tanggal</b>
                         </div>
                         <div className="col-sm-3">
-                            <b>Agenda</b>
-                        </div>
-                        <div className="col-sm-4">
-                            <b>Meeting Room</b>
+                            <b>Jam</b>
                         </div>
                         <div className="col-sm-3">
-                            <b>Jam</b>
+                            <b>Jumlah Peserta</b>
+                        </div>
+                        <div className="col-sm-4">
+                            <b>Add On</b>
                         </div>
                     </div>
                     <div className="row mb-4">
@@ -76,28 +106,12 @@ class Detail_History extends Component {
                             {tanggal}
                         </div>
                         <div className="col-sm-3">
-                            {agenda}
-                        </div>
-                        <div className="col-sm-4">
-                            {room}
-                        </div>
-                        <div className="col-sm-3">
                             {time}
                         </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-sm-2">
-                            <b>Jumlah Peserta</b>
-                        </div>
                         <div className="col-sm-3">
-                            <b>Add On</b>
-                        </div>
-                    </div>
-                    <div className="row mb-4">
-                        <div className="col-sm-2">
                             {participant}
                         </div>
-                        <div className="col-sm-3">
+                        <div className="col-sm-4">
                             {addon}
                         </div>
                     </div>
@@ -141,7 +155,6 @@ class Detail_History extends Component {
     
     render() {
         var participant = this.state.history.participant
-        var total_amount = this.state.total_amount
             return (
                 <div className='card-body'>     
                     {this.renderPemesan()}
@@ -154,31 +167,6 @@ class Detail_History extends Component {
                         {this.renderParticipant()}
                         </div>
                     </div>
-                    {/* <div className='mx-auto card mb-3'>
-                        <div className='card-body'> 
-                            <div className="card-title d-flex">
-                                <h1 style={{marginRight:"20px"}}>Participant</h1>
-                                <h1>({participant.length} Participant)</h1>
-                            </div>
-                            {this.renderDetail()}
-                            <div className="d-flex navbar py-2">
-                                <div className="col-10">
-                                    Total Amount
-                                </div>
-                                <div className="col-2">
-                                    Rp. {total_amount.toLocaleString('id-ID')}
-                                </div>
-                            </div>
-                        </div>
-                    </div> */}
-                    {/* <img className='list' alt='' style={{width: 150, height: 150}} src={`http://localhost:2019/products/avatar/${image}`}/>
-                    <div className='card-body'>
-                        <h5 className='card-title'>{product_name}</h5>
-                        <p className='card-text'>{detail}</p>
-                        <p className='card-text'>Rp. {price}</p>
-                        <button className='btn btn-outline-primary btn-block'>Detail</button>
-                        <button className='btn btn-primary btn-block'>Add To Cart</button>
-                    </div> */}
                 </div>
             )
     }
