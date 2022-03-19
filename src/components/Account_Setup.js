@@ -102,7 +102,7 @@ class Account_Setup extends Component {
                 return(
                     <div className="mb-3"> 
                         <button className="btn btn-outline-secondary dropdown-toggle mb-3" type="button" data-bs-toggle="dropdown" style={{width:"100%",textAlign: "left"}} onClick={ () => this.handleClickAccount(account.nama) }>{account.nama}</button>
-                        <div className={this.state.selected == account.nama ? 'd-block' : 'd-none'}>
+                        <div className={this.state.selected === account.nama ? 'd-block' : 'd-none'}>
                             <button type="button" className="tombol2 btn btn-primary" onClick={ () => this.handleClickSetup(account.nama) }>Setup</button>
                             <button type="button" className="tombol2 btn btn-danger" onClick={ this.handleClickRuangan }>Delete</button>
                             <div className="row mb-3">

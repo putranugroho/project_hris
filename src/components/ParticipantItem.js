@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-class PatientItem extends Component {
+class ParticipantItem extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -96,21 +96,25 @@ class PatientItem extends Component {
                         <input className='form-control' type="text" ref={(input)=>{this.nama = input}}/>
                     </form>
                     <div className='card-title'>
-                        <div  style={{fontWeight: "600"}}>Alamat Email</div>
-                    <form className='input-group mb-3'>
-                        <input className='form-control' type="text" ref={(input)=>{this.email = input}}/>
-                    </form>
-                    </div>
-                    <div className='card-title'>
                         <div  style={{fontWeight: "600"}}>Nomer Handphone</div>
+                    </div>
                     <form className='input-group mb-3'>
                         <input className='form-control' type="text" ref={(input)=>{this.hp = input}}/>
                     </form>
+                    <div className='card-title d-flex '>
+                        <div style={{fontWeight: "600"}}>Alamat Email</div>
+                        <div className="form-check form-switch mx-3">
+                            <input className="form-check-input" type="checkbox" id={`checkbox${this.props.index}`}/>
+                            <label className="form-check-label" for="flexSwitchCheckDefault">Send Email</label>
+                        </div>
                     </div>
+                    <form className='input-group mb-3'>
+                        <input className='form-control' type="text" ref={(input)=>{this.email = input}}/>
+                    </form>
                 </div>
             </div>
         )
     }
 }
 
-export default PatientItem
+export default ParticipantItem

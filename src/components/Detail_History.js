@@ -132,7 +132,7 @@ class Detail_History extends Component {
             return (
                 <div>
                     <button className="btn btn-outline-secondary dropdown-toggle mb-3" type="button" data-bs-toggle="dropdown" style={{width:"100%",textAlign: "left"}} onClick={ ()=> this.handleClick(participant.indexOf(data)) }>{data.nama}</button>
-                    <div className={this.state.isDisplay == participant.indexOf(data) ? 'd-block' : 'd-none'}>
+                    <div className={this.state.isDisplay === participant.indexOf(data) ? 'd-block' : 'd-none'}>
                         <div className="row mb-3    ">
                             <div className="col-sm-2">
                                 <b>Email :</b>

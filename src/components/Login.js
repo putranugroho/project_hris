@@ -11,7 +11,7 @@ class Login extends Component {
     state = {
         text: "Show Password",
         text2: "Hide Password"
-      }
+    }
 
     onButtonClick = () => {
         const username = this.username.value

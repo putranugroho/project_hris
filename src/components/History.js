@@ -113,7 +113,7 @@ class History extends Component {
     render () {
         return (
             <div> 
-                <div className='p-5 row bg-secondary' onClick={()=>this.setRedirect()}>
+                <div className='p-5 row bg-secondary'>
                     <div className='col-sm-11 mx-auto border p-4 rounded-3 bg-white'>
                         <h1 className="">My Appointment</h1>
                         <h4 className="mt-3 text-start">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</h4>

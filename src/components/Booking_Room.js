@@ -1,11 +1,12 @@
 import React, {Component} from 'react'
 import {Link, Redirect} from 'react-router-dom'
 import DatePicker from "react-datepicker";
+import axios from 'axios'
 import "react-datepicker/dist/react-datepicker.css";
 import './Booking_Room.css';
 
 import RoomItem from './RoomItem'
-import PatientItem from './PatientItem'
+import ParticipantItem from './ParticipantItem'
 
 class Booking_Room extends Component {
     constructor(props) {
@@ -16,67 +17,60 @@ class Booking_Room extends Component {
             peserta: [],
             activePeserta: null,
             AddOn: ["TV","Speaker","Infocus","Mic","Mixer"],
-            ruangan: [
-                {
-                    id: 1,
-                    kapasitas: "20 Orang",
-                    fasilitas: ["TV","Speaker","Infocus","Mic"]
-                },{
-                    id: 2,
-                    kapasitas: "20 Orang",
-                    fasilitas: ["TV","Speaker","Infocus","Mic"]
-                },{
-                    id: 3,
-                    kapasitas: "10 Orang",
-                    fasilitas: ["TV","Infocus"]
-                },{
-                    id: 4,
-                    kapasitas: "5 Orang",
-                    fasilitas: ["TV","Infocus"]
-                },{
-                    id: 5,
-                    kapasitas: "50 Orang",
-                    fasilitas: ["TV","Speaker","Infocus","Mic","Mixer"]
-                }
-            ],
+            ruangan: [],
             activeRuangan: null,
             services: [],
             detail_service: [],
-            total_amount: 0
+            detail_room: [],
+            selectOption : 0,
+            jumlahPeserta: []
         };
-    }
 
-    componentDidUpdate(prevState){
-        this.renderRuangan()
+        this.handleChange = this.handleChange.bind(this);
     }
     
-    setRedirect = () => {
-        this.setState({
-          redirect: true
-        })
+    addService = () => this.setState({redirect: true})
+
+    addDays = (date, days) => {
+        var result = new Date(date);
+        result.setDate(result.getDate() + days);
+        return result;
     }
 
-    renderCalender = () => {
-        const ExampleCustomInput = React.forwardRef(({ value, onClick }, ref) => (
-          <button className="btn btn-outline-secondary" style={{width: "100%"}} type="button" onClick={onClick} ref={ref}>
-            {value}
-          </button>
-        ));
-        return (
-          <DatePicker
-          selected={this.state.startDate}
-          onChange={(date) => this.setState({ startDate: date })}
-            customInput={<ExampleCustomInput />}
-          />
-        );
-    };
-
-    handleClickRuangan = (index) => {
-        if (index === this.state.activeRuangan) {
-            this.setState({ activeRuangan: null })
-        } else {
-            this.setState({ activeRuangan: index })
+    addPeserta = () => {
+        let newPeserta = []
+        let addPeserta = this.state.peserta.length+1
+        for (let i = 1; i <= addPeserta; i++) {
+            newPeserta.push(i)
         }
+        this.setState({ peserta: newPeserta})
+    }
+
+    componentDidMount(){
+        this.getRoom()
+    }
+
+    componentDidUpdate(){
+        this.renderRuangan()
+    }
+
+    getRoom = () => {
+        axios.get('http://localhost:4000/rooms')
+          .then(res => {
+            this.setState({ruangan: res.data})
+            })
+    }
+
+    handleChange(e) {
+        let selectOption = parseInt(e.target.value)
+        let jumlahPeserta = []
+        for (let i = 0; i <= selectOption; i++) {
+            if (i !== 0) {
+                jumlahPeserta.push(i)
+            }
+        }
+        this.setState({selectOption})
+        this.setState({jumlahPeserta})
     }
 
     handleClickPeserta = (index) => {
@@ -87,13 +81,17 @@ class Booking_Room extends Component {
         }
     }
 
+    handleClickRuangan = (index) => {
+        if (index === this.state.activeRuangan) {
+            this.setState({ activeRuangan: null })
+        } else {
+            this.setState({ activeRuangan: index })
+        }
+    }
+
     handleOnChange = value => {
         let detail_service = this.state.detail_service
-        let reset = this.state.reset
-        console.log(reset);
         if (value.length) {
-            this.setState({ AddOn: reset })
-            console.log(this.state.AddOn);
             for (let i = 0; i < detail_service.length; i++) {
                 if (detail_service[i].id === value[0].id) {
                     if (detail_service[i].count === 1) {
@@ -128,23 +126,176 @@ class Booking_Room extends Component {
                 }
             }
         }
-        var total_amount = 0
-        for (let i = 0; i < detail_service.length; i++) {
-            total_amount = total_amount + parseInt(detail_service[i].value)
+        let detail_room = []
+        let ruangan = this.state.ruangan
+        if (detail_service.length) {
+            for (let i = 0; i < ruangan.length; i++) {
+                if (detail_service[0].ruangan_id === ruangan[i].id) {
+                    detail_room.push(ruangan[i])
+                }
+            }
         }
-        this.setState({total_amount})
+        this.setState({detail_service})
+    }
+
+    renderBooking = () => {
+        if (this.state.detail_service.length) {
+            if (this.state.selectOption !== 0) {
+                return (
+                    <div>
+                        <div className='border-bottom border-secondary card-title d-flex'>
+                            <h2>Meeting Participants</h2>
+                            <span className='align-self-center mx-3'>Jumlah dan data peserta</span>
+                        </div>
+                        <div className='card-title'>
+                            <div  style={{fontWeight: "600"}}>Jumlah Peserta</div>
+                        </div>
+                        <select id="selectJumlah" className="form-select mb-3" aria-label="Default select example" value={this.state.selectOption} onChange={this.handleChange} >
+                            <option value="default">0</option>
+                            {this.renderOption()}
+                        </select>
+                        {this.renderPeserta()}
+                        <div className='border-bottom border-secondary card-title d-flex mt-3'>
+                            <h2>Additional Request</h2>
+                            <span className='align-self-center mx-3'>Kebutuhan tambahan</span>
+                        </div>
+                        <div className="p-3">
+                            {this.renderFasilitas()}
+                            <div className='card-title'>
+                                <div  style={{fontWeight: "600"}}>Lain-lain : </div>
+                            </div>
+                            <form className='input-group mb-3'>
+                                <input className='form-control' type="text" ref={(input)=>{this.nama = input}}/>
+                            </form>
+                        </div>
+                    </div>
+                )
+            } else {
+                return (
+                    <div>
+                        <div className='border-bottom border-secondary card-title d-flex'>
+                            <h2>Meeting Participants</h2>
+                            <span className='align-self-center mx-3'>Jumlah dan data peserta</span>
+                        </div>
+                        <div className='card-title'>
+                            <div  style={{fontWeight: "600"}}>Jumlah Peserta</div>
+                        </div>
+                        <select id="selectJumlah" className="form-select" aria-label="Default select example" value={this.state.selectOption} onChange={this.handleChange}>
+                            <option value="default">0</option>
+                            {this.renderOption()}
+                        </select>
+                    </div>
+                )
+            }
+        } else {
+            return (
+                <div></div>
+            )
+        }
+    }
+
+    renderCalender = () => {
+        const ExampleCustomInput = React.forwardRef(({ value, onClick }, ref) => (
+          <button className="btn btn-outline-secondary" style={{width: "100%"}} type="button" onClick={onClick} ref={ref}>
+            {value}
+          </button>
+        ));
+        return (
+          <DatePicker
+            selected={this.addDays(new Date(), 1)}
+            onChange={(date) => this.setState({ startDate: date })}
+            minDate={this.addDays(new Date(), 1)}
+            customInput={<ExampleCustomInput />}
+          />
+        );
+    };
+
+    renderDetailService = () => {
+        if (this.state.detail_service) {
+            return this.state.detail_service.map(selected => {
+                return (
+                    <div className="d-flex navbar py-2">
+                        <div>
+                            {this.state.startDate.toString().substring(0,15)}
+                        </div>
+                        <div>
+                            {selected.value}
+                        </div>
+                    </div>
+                )
+            })
+        }
+    }
+
+    renderFasilitas = () => {
+        let ruangan_id = this.state.detail_service[0].ruangan_id
+        // let addon = this.state.AddOn
+        // let active = []
+        // for (let a = 0; a < addon.length; a++) {
+        //     let i = ""
+        //     for (let b = 0; b < fasilitas.length; b++) {
+        //         if (fasilitas[b] !== addon[a]) {
+        //             i = addon[a]
+        //         } else if (fasilitas[b] === addon[a]) {
+        //             i = ""
+        //             break
+        //         }
+        //     }
+        //     if (i !== "") {
+        //         active.push(i)
+        //     }
+        // }
+        return this.state.ruangan.map(ruangan => {
+            if (ruangan.room_id === ruangan_id) {
+                return ruangan.facility.map(facility => {
+                    if (facility.status === 0) {
+                        return (
+                            <div className="form-check form-check-inline">
+                                <input className="form-check-input" type="checkbox" id={facility.facility_name} value={facility.facility_name}/>
+                                <label className="form-check-label" >{facility.facility_name}</label>
+                            </div>
+                        )           
+                    }
+                })
+            }
+        })
+    }
+
+    renderOption = () => {
+        let capacity = ""
+        let jumlahPeserta = []
+        if (this.state.detail_service.length !== 0) {
+            let id = this.state.detail_service[0].ruangan_id
+            let ruangan = this.state.ruangan
+            for (let i = 0; i < ruangan.length; i++) {
+                if (ruangan[i].room_id === id) {
+                    capacity = parseInt(ruangan[i].capacity)
+                    for (let i = 0; i <= capacity; i++) {
+                        if (i !== 0) {
+                            jumlahPeserta.push(i)
+                        }
+                    }
+                }
+            }
+            return jumlahPeserta.map(jumlah => {
+                return (
+                    <option value={jumlah}>{jumlah}</option>
+                )
+            })
+        } else {
+            capacity = ""
+            jumlahPeserta = []
+            this.setState({ jumlahPeserta });
+        }
     }
 
     renderRuangan = () => {
         return this.state.ruangan.map(ruangan => {
             return (
-                <RoomItem value={this.state.services} index={ruangan.id} kapasitas={ruangan.kapasitas} fasilitas={ruangan.fasilitas} isDisplay={ this.state.activeRuangan===ruangan.id } onClick={ this.handleClickRuangan } onChange={ this.handleOnChange }/>
+                <RoomItem value={this.state.services} time_slot={ruangan.time_slot}name={ruangan.roomname} index={ruangan.room_id} kapasitas={ruangan.capacity} fasilitas={ruangan.facility} isDisplay={ this.state.activeRuangan===ruangan.room_id } onClick={ this.handleClickRuangan } onChange={ this.handleOnChange }/>
             )
         })
     }
-
-    
-    addService = () => this.setState({redirect: true})
     
     renderRedirect = () => {
         if (this.state.redirect) {
@@ -153,7 +304,7 @@ class Booking_Room extends Component {
     }
 
     renderService = () => {
-        if (this.state.detail_service.length != 0) {
+        if (this.state.detail_service.length !== 0) {
             return (
                 <div>
                     {this.renderDetailService()}
@@ -178,49 +329,20 @@ class Booking_Room extends Component {
         }
     }
 
-    renderDetailService = () => {
-        if (this.state.detail_service) {
-            return this.state.detail_service.map(selected => {
-                return (
-                    <div className="d-flex navbar py-2">
-                        <div>
-                            {this.state.startDate.toString().substring(0,15)}
-                        </div>
-                        <div>
-                            {selected.value}
-                        </div>
-                    </div>
-                )
-            })
-        }
-    }
-
     renderPeserta = () => {
-        return this.state.peserta.map(peserta => {
-            return (
-                <PatientItem value={this.state.services} index={peserta} isDisplay={ this.state.activePeserta===peserta } onClick={ this.handleClickPeserta } onChange={ this.handleOnChange }/>
-            )
+        return this.state.jumlahPeserta.map(peserta => {
+            if (peserta !== 0) {
+                return (
+                    <ParticipantItem value={this.state.services} index={peserta} isDisplay={ this.state.activePeserta===peserta } onClick={ this.handleClickPeserta }/>
+                )
+            }
         })
     }
-
-    renderFasilitas = () => {
-        return this.state.AddOn.map(addon => {
-            return (
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="checkbox" id={addon} value={addon}/>
-                    <label class="form-check-label" for={addon}>{addon}</label>
-                </div>
-            )
+    
+    setRedirect = () => {
+        this.setState({
+          redirect: true
         })
-    }
-
-    addPeserta = () => {
-        let newPeserta = []
-        let addPeserta = this.state.peserta.length+1
-        for (let i = 1; i <= addPeserta; i++) {
-            newPeserta.push(i)
-        }
-        this.setState({ peserta: newPeserta})
     }
 
     // Addon = () => {
@@ -248,15 +370,15 @@ class Booking_Room extends Component {
         //                 if (addon[a].fasilitas === ruangan.fasilitas[b]) {
         //                     return(
         //                         <div>
-        //                             <input type="checkbox" class="btn-check" id={addon.id} autocomplete="off"/>
-        //                             <label class="btn btn-outline-primary mx-2" for={addon.id}>{addon.fasilitas}</label>
+        //                             <input type="checkbox" className="btn-check" id={addon.id} autocomplete="off"/>
+        //                             <label className="btn btn-outline-primary mx-2" for={addon.id}>{addon.fasilitas}</label>
         //                         </div>
         //                     )
         //                 } else {
         //                     return(
         //                         <div>
-        //                             <input type="checkbox" class="btn-check" id={addon.id} autocomplete="off"/>
-        //                             <label class="btn btn-outline-info mx-2" disabled for={addon.id}>{addon.fasilitas}</label>
+        //                             <input type="checkbox" className="btn-check" id={addon.id} autocomplete="off"/>
+        //                             <label className="btn btn-outline-info mx-2" disabled for={addon.id}>{addon.fasilitas}</label>
         //                         </div>
         //                     )
         //                 }
@@ -284,8 +406,8 @@ class Booking_Room extends Component {
         // return this.state.AddOn.map(AddOn => {
         //     return(
         //         <div>
-        //             <input type="checkbox" class="btn-check" id={AddOn} autocomplete="off"/>
-        //             <label class="btn btn-outline-primary mx-2" for={AddOn}>{AddOn}</label>
+        //             <input type="checkbox" className="btn-check" id={AddOn} autocomplete="off"/>
+        //             <label className="btn btn-outline-primary mx-2" for={AddOn}>{AddOn}</label>
         //         </div>
         //     )
         // })
@@ -334,34 +456,7 @@ class Booking_Room extends Component {
                             <span className='align-self-center mx-3'>Pilih Ruang dan Waktu</span>
                         </div>
                         {this.renderRuangan()}
-                        <div className='border-bottom border-secondary card-title d-flex'>
-                            <h2>Meeting Participants</h2>
-                            <span className='align-self-center mx-3'>Jumlah dan data peserta</span>
-                        </div>
-                        <div className='card-title'>
-                            <div  style={{fontWeight: "600"}}>Jumlah Peserta</div>
-                        </div>
-                        <form className='input-group mb-3'>
-                            <input className='form-control' type="text" ref={(input)=>{this.nama = input}}/>
-                        </form>
-                        {this.renderPeserta()}
-                        <button className='btn btn-primary my-3' onClick={this.addPeserta}>
-                            Tambah Peserta
-                        </button>
-                        {/* {this.Addon()} */}
-                        <div className='border-bottom border-secondary card-title d-flex'>
-                            <h2>Additional Request</h2>
-                            <span className='align-self-center mx-3'>Kebutuhan tambahan</span>
-                        </div>
-                        <div className="p-3">
-                            {this.renderFasilitas()}
-                            <div className='card-title'>
-                                <div  style={{fontWeight: "600"}}>Lain-lain : </div>
-                            </div>
-                            <form className='input-group mb-3'>
-                                <input className='form-control' type="text" ref={(input)=>{this.nama = input}}/>
-                            </form>
-                        </div>
+                        {this.renderBooking()}
                         <Link to={"/"}>
                             <button className='btn btn-danger mx-3'>Cancel</button>
                         </Link>
