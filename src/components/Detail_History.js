@@ -116,7 +116,7 @@ class Detail_History extends Component {
                         </div>
                     </div>
                     <div className="">
-                        Note
+                        <b>Note</b>
                     </div>
                     <div className="">
                           {note}

@@ -9,6 +9,7 @@ import Booking_Room from './components/Booking_Room'
 import Booking_Confirm from './components/Booking_Confirm'
 import Booking_Reschedule from './components/Booking_Reschedule'
 import Booking_Invitation from './components/Booking_Invitation'
+import Booking_Reservation from './components/Booking_Reservation'
 import Meeting_Room_Setup from './components/Meeting_Room_Setup'
 import Facilities_Setup from './components/Facilities_Setup'
 import Account_Setup from './components/Account_Setup'
@@ -54,6 +55,7 @@ class App extends React.Component {
           <Route path="/booking" exact component={Booking_Room}/>
           <Route path="/booking_confirm" exact component={Booking_Confirm}/>
           <Route path="/booking_reschedule" exact component={Booking_Reschedule}/>
+          <Route path="/booking_reservation" exact component={Booking_Reservation}/>
           <Route path="/booking_invitation" exact component={Booking_Invitation}/>
           <Route path="/history" exact component={History}/>
           <Route path="/meeting_setup" exact component={Meeting_Room_Setup}/>

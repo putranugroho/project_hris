@@ -12,30 +12,32 @@ class Booking_Room extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            startDate: new Date(),
+            startDate: this.addDays(new Date(), 1),
             redirect: false,
             peserta: [],
             activePeserta: null,
-            AddOn: ["TV","Speaker","Infocus","Mic","Mixer"],
+            AddOn: [],
             ruangan: [],
             activeRuangan: null,
             services: [],
             detail_service: [],
             detail_room: [],
             selectOption : 0,
-            jumlahPeserta: []
+            jumlahPeserta: [],
+            data_booking: {},
+            reservation: false
         };
 
         this.handleChange = this.handleChange.bind(this);
     }
     
-    addService = () => this.setState({redirect: true})
-
     addDays = (date, days) => {
         var result = new Date(date);
         result.setDate(result.getDate() + days);
         return result;
     }
+    
+    addService = () => this.setState({redirect: true})
 
     addPeserta = () => {
         let newPeserta = []
@@ -46,16 +48,74 @@ class Booking_Room extends Component {
         this.setState({ peserta: newPeserta})
     }
 
+    bookingConfirmation = () => {
+        let nama = []
+        for (let x = 0; x < this.state.selectOption; x++) {
+            let peserta = {}
+            peserta.nama = document.getElementById(`nama-peserta${x+1}`).value
+            peserta.hp = document.getElementById(`hp-peserta${x+1}`).value
+            peserta.email = document.getElementById(`email-peserta${x+1}`).value
+            peserta.blast = document.getElementById(`checkbox${x+1}`).checked
+            nama.push(peserta)
+        }
+        let fasilitas = []
+        for (let a = 0; a < this.state.ruangan.length; a++) {
+            if (this.state.ruangan[a].room_id === this.state.detail_service[0].ruangan_id) {
+                for (let b = 0; b < this.state.ruangan[a].facility.length; b++) {
+                    if (this.state.ruangan[a].facility[b].status === 0) {
+                        fasilitas.push(this.state.ruangan[a].facility[b].facility_name)
+                    }
+                }
+            }
+        }
+        let addon = []
+        for (let y = 0; y < fasilitas.length; y++) {
+            if (document.getElementById(`${fasilitas[y]}`).checked)
+            addon.push(fasilitas[y])
+        }
+        if (this.etc.value) {
+            addon.push(this.etc.value)
+        }
+        let date = new Date(this.state.startDate)
+        let month = date.getMonth()+1
+        date = `${month}-${date.getDate()}-${date.getFullYear()}`
+        let pic = this.pic.value
+        let jabatan = this.jabatan.value
+        let agenda = this.agenda.value
+        let payload = {
+            pic,jabatan,nama,agenda,date,addon
+        }
+        this.setState({data_booking:payload,reservation:true})
+    }
+
     componentDidMount(){
+        this.getRoom()
+    }
+
+    componentWillMount(){
         this.getRoom()
     }
 
     componentDidUpdate(){
         this.renderRuangan()
+        this.renderBooking()
     }
 
-    getRoom = () => {
-        axios.get('http://localhost:4000/rooms')
+    getRoom = (tanggal) => {
+        let date = new Date(this.state.startDate)
+        if (tanggal) {
+            date = tanggal
+        }
+        let month = date.getMonth()+1
+        if (month < 10) {
+            month = `0${month}`
+        }
+        let day = date.getDate()
+        if (day < 10) {
+            day = `0${day}`
+        }
+        date = `${month}-${day}-${date.getFullYear()}`
+        axios.get('http://localhost:4000/rooms?date='+date)
           .then(res => {
             this.setState({ruangan: res.data})
             })
@@ -90,6 +150,7 @@ class Booking_Room extends Component {
     }
 
     handleOnChange = value => {
+        value.date = document.getElementById("tanggal").innerHTML
         let detail_service = this.state.detail_service
         if (value.length) {
             for (let i = 0; i < detail_service.length; i++) {
@@ -165,7 +226,7 @@ class Booking_Room extends Component {
                                 <div  style={{fontWeight: "600"}}>Lain-lain : </div>
                             </div>
                             <form className='input-group mb-3'>
-                                <input className='form-control' type="text" ref={(input)=>{this.nama = input}}/>
+                                <input className='form-control' type="text" ref={(input)=>{this.etc = input}}/>
                             </form>
                         </div>
                     </div>
@@ -196,14 +257,17 @@ class Booking_Room extends Component {
 
     renderCalender = () => {
         const ExampleCustomInput = React.forwardRef(({ value, onClick }, ref) => (
-          <button className="btn btn-outline-secondary" style={{width: "100%"}} type="button" onClick={onClick} ref={ref}>
+          <button id="tanggal" className="btn btn-outline-secondary" style={{width: "100%"}} type="button" onClick={onClick} ref={ref}>
             {value}
           </button>
         ));
         return (
           <DatePicker
-            selected={this.addDays(new Date(), 1)}
-            onChange={(date) => this.setState({ startDate: date })}
+            selected={this.state.startDate}
+            onChange={(date) => {
+                this.setState({startDate: date})
+                this.getRoom(date)
+            }}
             minDate={this.addDays(new Date(), 1)}
             customInput={<ExampleCustomInput />}
           />
@@ -229,22 +293,6 @@ class Booking_Room extends Component {
 
     renderFasilitas = () => {
         let ruangan_id = this.state.detail_service[0].ruangan_id
-        // let addon = this.state.AddOn
-        // let active = []
-        // for (let a = 0; a < addon.length; a++) {
-        //     let i = ""
-        //     for (let b = 0; b < fasilitas.length; b++) {
-        //         if (fasilitas[b] !== addon[a]) {
-        //             i = addon[a]
-        //         } else if (fasilitas[b] === addon[a]) {
-        //             i = ""
-        //             break
-        //         }
-        //     }
-        //     if (i !== "") {
-        //         active.push(i)
-        //     }
-        // }
         return this.state.ruangan.map(ruangan => {
             if (ruangan.room_id === ruangan_id) {
                 return ruangan.facility.map(facility => {
@@ -303,19 +351,31 @@ class Booking_Room extends Component {
         }
     }
 
+    renderReservation = () => {
+        let data = this.state.data_booking
+        if (this.state.reservation) {
+            return <Redirect
+                to={{
+                pathname: "/booking_reservation",
+                state: { booking : {
+                    pic:data.pic,
+                    jabatan:data.jabatan,
+                    nama:data.nama,
+                    agenda:data.agenda,
+                    room:this.state.detail_service,
+                    date:data.date,
+                    addon:data.addon
+                    }}
+                }}
+            />
+        }
+    }
+
     renderService = () => {
         if (this.state.detail_service.length !== 0) {
             return (
                 <div>
                     {this.renderDetailService()}
-                    {/* <div className="d-flex navbar border-bottom border-secondary py-2">
-                        <div>
-                            Add On : 
-                        </div>
-                        <div>
-                            {this.state.peserta.length}
-                        </div>
-                    </div> */}
                     <div className="d-flex navbar border-bottom border-secondary py-2">
                         <div>
                             Total Peserta : 
@@ -345,78 +405,19 @@ class Booking_Room extends Component {
         })
     }
 
-    // Addon = () => {
-    //     if (this.state.detail_service.length != 0) {
-    //         return (
-    //             <div> 
-    //                 <div className='border-bottom border-secondary card-title d-flex'>
-    //                     <h1>Additional Request</h1>
-    //                     <span className='align-self-center mx-3'>Kebutuhan tambahan</span>
-    //                 </div>
-    //                 <div className="btn-group" role="group" aria-label="Basic checkbox toggle button group">
-    //                     {this.renderAddon()}    
-    //                 </div>
-    //             </div>
-    //         )
-    //     }
-    // }
-
-    // renderAddon = () => {
-        // let addon = this.state.AddOn
-        // return this.state.ruangan.map(ruangan => {  
-        //     if (this.state.detail_service[0].id === ruangan.id) {
-        //         for (let a = 0; a < addon.length; a++) {
-        //             for (let b = 0; b < ruangan.fasilitas.length; b++) {
-        //                 if (addon[a].fasilitas === ruangan.fasilitas[b]) {
-        //                     return(
-        //                         <div>
-        //                             <input type="checkbox" className="btn-check" id={addon.id} autocomplete="off"/>
-        //                             <label className="btn btn-outline-primary mx-2" for={addon.id}>{addon.fasilitas}</label>
-        //                         </div>
-        //                     )
-        //                 } else {
-        //                     return(
-        //                         <div>
-        //                             <input type="checkbox" className="btn-check" id={addon.id} autocomplete="off"/>
-        //                             <label className="btn btn-outline-info mx-2" disabled for={addon.id}>{addon.fasilitas}</label>
-        //                         </div>
-        //                     )
-        //                 }
-        //             }
-        //         }
-        //     }
-        // })
-        // let newaddon = []
-        // for (let a = 0; a < this.state.ruangan.length; a++) {
-        //     if (this.state.detail_service[0].id == this.state.ruangan[a].id) {
-        //         for (let b = 0; b < this.state.ruangan[a].fasilitas.length; b++) {
-        //             for (let i = 0; i < this.state.AddOn.length; i++) {
-        //                 if (this.state.AddOn[i] == this.state.ruangan[a].fasilitas[b]) {
-        //                     break
-        //                 } else if (i == this.state.AddOn.length)
-        //                     newaddon.push(this.state.ruangan[a].fasilitas[b]
-        //                 )
-        //             }   
-        //         }
-        //     }
-        // }
-
-        // console.log(newaddon);
-        
-        // return this.state.AddOn.map(AddOn => {
-        //     return(
-        //         <div>
-        //             <input type="checkbox" className="btn-check" id={AddOn} autocomplete="off"/>
-        //             <label className="btn btn-outline-primary mx-2" for={AddOn}>{AddOn}</label>
-        //         </div>
-        //     )
-        // })
-    // }
-
     render (){
         return (
             <div className='mt-3 row'> 
                 <div className='col-sm-10 mx-auto card'>
+                <div className="position-relative" style={{margin: "2.5rem 5rem"}}>
+                    <div className="progress" style={{height: "1px"}}>
+                        <div className="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <button type="button" className="position-absolute translate-middle btn btn-sm btn-primary rounded-pill" style={{top:"0",left:"10px",width: "2rem", height:"2rem"}}>1</button>
+                    <div className="position-absolute" style={{top:"20px",left:"-50px"}}>Booking Ruangan</div>
+                    <button type="button" className="position-absolute top-0 start-100 translate-middle btn btn-sm btn-secondary rounded-pill" style={{width: "2rem", height:"2rem"}}>2</button>
+                    <div className="position-absolute" style={{top:"20px",left:"96%"}}>Konfirmasi</div>
+                </div>
                     <div className='card-body'>
                         <div className='border-bottom border-secondary card-title d-flex' >
                             <h2>Registration</h2>
@@ -435,7 +436,7 @@ class Booking_Room extends Component {
                                 <div  style={{fontWeight: "600"}}>Nama Lengkap PIC</div>
                             </div>
                             <form className='input-group mb-3'>
-                                <input className='form-control' type="text" ref={(input)=>{this.nama = input}}/>
+                                <input className='form-control' type="text" ref={(input)=>{this.pic = input}}/>
                             </form>
                             <div className='card-title'>
                                 <div  style={{fontWeight: "600"}}>Jabatan</div>
@@ -449,7 +450,7 @@ class Booking_Room extends Component {
                             <span className='align-self-center mx-3'>Jelaskan agenda/ topik meeting</span>
                         </div>
                         <form className='input-group mb-3'>
-                            <input className='form-control' type="text" ref={(input)=>{this.nama = input}}/>
+                            <input className='form-control' type="text" ref={(input)=>{this.agenda = input}}/>
                         </form>
                         <div className='border-bottom border-secondary card-title d-flex'>
                             <h2>Meeting Room</h2>
@@ -460,10 +461,11 @@ class Booking_Room extends Component {
                         <Link to={"/"}>
                             <button className='btn btn-danger mx-3'>Cancel</button>
                         </Link>
-                        <button className='btn btn-primary my-3' onClick={this.setRedirect}>
+                        <button className='btn btn-primary my-3' onClick={()=>this.bookingConfirmation()}>
                             Kirim
                         </button>
                         {this.renderRedirect()}
+                        {this.renderReservation()}
                     </div>
                 </div>
             </div>

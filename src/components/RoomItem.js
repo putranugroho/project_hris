@@ -1,6 +1,4 @@
 import React, { Component } from 'react'
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 
 class RoomItem extends Component {
     constructor(props) {
@@ -52,21 +50,6 @@ class RoomItem extends Component {
             this.props.onChange(removeItem)
         }
     }
-
-    renderCalender = () => {
-        const ExampleCustomInput = React.forwardRef(({ value, onClick }, ref) => (
-          <button className="btn btn-outline-secondary" type="button" onClick={onClick} ref={ref}>
-            {value}
-          </button>
-        ));
-        return (
-          <DatePicker
-          selected={this.state.startDate}
-          onChange={(date) => this.setState({ startDate: date })}
-            customInput={<ExampleCustomInput />}
-          />
-        );
-    };
 
     renderFeatures = () => {
         return this.props.fasilitas.map(fasilitas => {

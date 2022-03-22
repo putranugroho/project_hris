@@ -21,6 +21,11 @@ const AuthReducer = (data = init, action) => {
                 username: "", 
                 email: ''
             }
+
+        case "CONTINUE_BOOKING":
+            return {
+                dataBooking: action.payload.dataBooking
+            }
     
         default:
             return data

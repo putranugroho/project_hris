@@ -93,13 +93,13 @@ class ParticipantItem extends Component {
                         <div  style={{fontWeight: "600"}}>Nama Lengkap</div>
                     </div>
                     <form className='input-group mb-3'>
-                        <input className='form-control' type="text" ref={(input)=>{this.nama = input}}/>
+                        <input id={`nama-peserta${this.props.index}`} className='form-control' type="text" ref={(input)=>{this.nama = input}}/>
                     </form>
                     <div className='card-title'>
                         <div  style={{fontWeight: "600"}}>Nomer Handphone</div>
                     </div>
                     <form className='input-group mb-3'>
-                        <input className='form-control' type="text" ref={(input)=>{this.hp = input}}/>
+                        <input id={`hp-peserta${this.props.index}`} className='form-control' type="text" ref={(input)=>{this.hp = input}}/>
                     </form>
                     <div className='card-title d-flex '>
                         <div style={{fontWeight: "600"}}>Alamat Email</div>
@@ -109,7 +109,7 @@ class ParticipantItem extends Component {
                         </div>
                     </div>
                     <form className='input-group mb-3'>
-                        <input className='form-control' type="text" ref={(input)=>{this.email = input}}/>
+                        <input id={`email-peserta${this.props.index}`} className='form-control' type="text" ref={(input)=>{this.email = input}}/>
                     </form>
                 </div>
             </div>

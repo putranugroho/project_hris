@@ -49,3 +49,12 @@ export const onLogoutUser = () => {
         type: "LOGOUT_SUCCESS"
     }
 }
+
+export const bookingConfirmation = (dataBooking) => {
+    return {
+        type: "CONTINUE_BOOKING",
+        payload: {
+            dataBooking
+        }
+    }
+}

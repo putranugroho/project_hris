@@ -31,9 +31,9 @@ class RoomSetup extends Component {
     renderFasilitas = () => {
         return this.state.AddOn.map(addon => {
             return (
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="checkbox" id={addon} value={addon}/>
-                    <label class="form-check-label" for={addon}>{addon}</label>
+                <div className="form-check form-check-inline">
+                    <input className="form-check-input" type="checkbox" id={addon} value={addon}/>
+                    <label className="form-check-label" for={addon}>{addon}</label>
                 </div>
             )
         })

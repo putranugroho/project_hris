@@ -152,14 +152,14 @@ class Booking_Reschedule extends Component {
                             <ModalBody>
                             <div className='d-block'>
                                 {this.renderCalender()}
-                                <div class="input-group mt-3 mb-3">
-                                    <div class="input-group-prepend" style={{width: "20%"}}>
-                                        <label class="input-group-text" for="inputGroupSelect01">Jam</label>
+                                <div className="input-group mt-3 mb-3">
+                                    <div className="input-group-prepend" style={{width: "20%"}}>
+                                        <label className="input-group-text" for="inputGroupSelect01">Jam</label>
                                     </div>
-                                    <select class="custom-select" id="inputGroupSelect01" style={{width: "40%"}}>
+                                    <select className="custom-select" id="inputGroupSelect01" style={{width: "40%"}}>
                                         {this.renderJam()}
                                     </select>
-                                    <select class="custom-select" id="inputGroupSelect01" style={{width: "40%"}}>
+                                    <select className="custom-select" id="inputGroupSelect01" style={{width: "40%"}}>
                                         {this.renderJam()}
                                     </select>
                                 </div>
