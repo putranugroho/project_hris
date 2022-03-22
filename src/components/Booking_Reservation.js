@@ -36,7 +36,7 @@ class Booking_Reservation extends Component {
                 alert('Error: ' + res.data)
             } else {
                 alert(res.data)
-                // this.setRedirect()
+                this.setRedirect()
             }
         })
     }
