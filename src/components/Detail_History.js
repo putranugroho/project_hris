@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import {Link} from 'react-router-dom'
 import axios from 'axios'
+import Port from '../port'
 
 class Detail_History extends Component {
     constructor(props) {
@@ -22,7 +23,7 @@ class Detail_History extends Component {
 
     getParticipant = () => {
         axios.get(
-            'http://localhost:4000/participant?id='+this.state.history.pemesan.reservation_id)
+            `${Port}/participant?id=${this.state.history.pemesan.reservation_id}`)
             .then(res => {
               this.setState({participant: res.data})
               })

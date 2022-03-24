@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import { Link, Redirect } from 'react-router-dom'
 import cookies from 'universal-cookie'
+import Port from '../port'
 
 const cookie = new cookies()
 
@@ -30,7 +31,7 @@ class History extends Component {
     getHistory = () => {
         const objCookie = cookie.get("userData")
         axios.get(
-            'http://localhost:4000/history?user='+objCookie.email)
+            `${Port}/history?user=${objCookie.email}`)
             .then(res => {
               this.setState({data: res.data})
               })

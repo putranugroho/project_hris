@@ -23,7 +23,7 @@ class Booking_Reservation extends Component {
         const detail_booking = this.state.detail_booking
         const objCookie = cookie.get("userData")
         axios.post(
-            'http://localhost:4000/booking',
+            '${Port}/booking',
             {
                 detail_booking,
                 objCookie

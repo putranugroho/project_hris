@@ -4,6 +4,7 @@ import DatePicker from "react-datepicker";
 import axios from 'axios'
 import "react-datepicker/dist/react-datepicker.css";
 import './Booking_Room.css';
+import Port from '../port'
 
 import RoomItem from './RoomItem'
 import ParticipantItem from './ParticipantItem'
@@ -115,7 +116,7 @@ class Booking_Room extends Component {
             day = `0${day}`
         }
         date = `${month}-${day}-${date.getFullYear()}`
-        axios.get('http://localhost:4000/rooms?date='+date)
+        axios.get(`${Port}/rooms?date=${date}`)
           .then(res => {
             this.setState({ruangan: res.data})
             })
