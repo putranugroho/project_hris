@@ -83,8 +83,28 @@ class Booking_Room extends Component {
         let pic = this.pic.value
         let jabatan = this.jabatan.value
         let agenda = this.agenda.value
+        let ruangan = ""
+        for (let z = 0; z < this.state.ruangan.length; z++) {
+            if (this.state.detail_service[0].ruangan_id === this.state.ruangan[z].room_id) {
+                ruangan = this.state.ruangan[z].roomname
+            }
+        }
+        let time = this.state.detail_service
+        for (let i = 0; i < time.length; i++) {
+            for (let j = 0; j < time.length; j++) {
+                if (time[j + 1]) {
+                    if (time[j].id > time[j + 1].id) {
+                        let temp = time[j];
+                        time[j] = time[j + 1];
+                        time[j + 1] = temp;
+                    }
+                }
+            }
+        }
+        time = `${time[0].selectTime[0].time_start} ~ ${time[time.length-1].selectTime[0].time_end}`
+        console.log(time);
         let payload = {
-            pic,jabatan,nama,agenda,date,addon
+            pic,jabatan,ruangan,time,nama,agenda,date,addon
         }
         this.setState({data_booking:payload,reservation:true})
     }
@@ -160,7 +180,6 @@ class Booking_Room extends Component {
                         this.state.detail_service.splice(i, 1);
                     } else {
                         detail_service[i].count = detail_service[i].count-1
-                        detail_service[i].value = parseInt(detail_service[i].value)-parseInt(value[0].value)
                     }
                     break
                 }
@@ -176,7 +195,6 @@ class Booking_Room extends Component {
                     if (detail_service[i].id === value.id) {
                         noValue = false
                         detail_service[i].count = detail_service[i].count+1
-                        detail_service[i].value = parseInt(detail_service[i].value)+parseInt(value.value)
                         break
                     } else {
                         noValue = true
@@ -275,23 +293,6 @@ class Booking_Room extends Component {
         );
     };
 
-    renderDetailService = () => {
-        if (this.state.detail_service) {
-            return this.state.detail_service.map(selected => {
-                return (
-                    <div className="d-flex navbar py-2">
-                        <div>
-                            {this.state.startDate.toString().substring(0,15)}
-                        </div>
-                        <div>
-                            {selected.value}
-                        </div>
-                    </div>
-                )
-            })
-        }
-    }
-
     renderFasilitas = () => {
         let ruangan_id = this.state.detail_service[0].ruangan_id
         return this.state.ruangan.map(ruangan => {
@@ -355,6 +356,7 @@ class Booking_Room extends Component {
     renderReservation = () => {
         let data = this.state.data_booking
         if (this.state.reservation) {
+            // console.log(this.state.detail_service);
             return <Redirect
                 to={{
                 pathname: "/booking_reservation",
@@ -363,30 +365,13 @@ class Booking_Room extends Component {
                     jabatan:data.jabatan,
                     nama:data.nama,
                     agenda:data.agenda,
-                    room:this.state.detail_service,
+                    ruangan:data.ruangan,
+                    time:data.time,
                     date:data.date,
                     addon:data.addon
                     }}
                 }}
             />
-        }
-    }
-
-    renderService = () => {
-        if (this.state.detail_service.length !== 0) {
-            return (
-                <div>
-                    {this.renderDetailService()}
-                    <div className="d-flex navbar border-bottom border-secondary py-2">
-                        <div>
-                            Total Peserta : 
-                        </div>
-                        <div>
-                            {this.state.peserta.length}
-                        </div>
-                    </div>
-                </div>
-            )
         }
     }
 

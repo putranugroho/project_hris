@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import axios from 'axios'
 import {Redirect} from 'react-router-dom'
 import cookies from 'universal-cookie'
+import Port from '../port'
 
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -16,14 +17,13 @@ class Booking_Reservation extends Component {
             detail_booking: props.location.state.booking,
             isDisplay: null
         };
-        console.log(props.location.state.booking);
     }
 
     confirmBooking = () => {
         const detail_booking = this.state.detail_booking
         const objCookie = cookie.get("userData")
         axios.post(
-            '${Port}/booking',
+            `${Port}/booking`,
             {
                 detail_booking,
                 objCookie
@@ -102,11 +102,10 @@ class Booking_Reservation extends Component {
     }
 
     render (){
-        let {pic,jabatan,nama,agenda,room,date,addon} = this.state.detail_booking
-        console.log(pic,jabatan,nama,agenda,room,date,addon);
-        room = room[0].value.split(" | Jam ")
-        let ruangan = room[0]
-        let jam = room[1]
+        let {pic,jabatan,nama,agenda,ruangan,time,date,addon} = this.state.detail_booking
+        if (!addon[0]) {
+            addon[0] = "none"
+        }
         return (
             <div className='px-5 card'>
                 <div className='mt-3 row'> 
@@ -158,7 +157,7 @@ class Booking_Reservation extends Component {
                                 </div>
                                 <div className="col-sm-3 border-2 border-start">
                                     <h3>Jam</h3>
-                                    <h5>{jam}</h5>
+                                    <h5>{time}</h5>
                                 </div>
                                 <div className="col-sm-3 border-2 border-start">
                                     <h3>Addon</h3>

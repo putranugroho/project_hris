@@ -17,7 +17,13 @@ class RoomItem extends Component {
         let time_slot = this.props.time_slot
         for (let i = 0; i < time_slot.length; i++) {
             if (time_slot[i].id === time) {
-                return (`Jam ${time_slot[i].time} ~ ${time_slot[i+1].time}`)
+                let selectTime = [
+                    {
+                    time_start: time_slot[i].time,
+                    time_end: time_slot[i+1].time
+                    }
+                ]
+                return selectTime
             }
         }
     }
@@ -32,7 +38,7 @@ class RoomItem extends Component {
             let selectedItem = {
                 id,
                 ruangan_id,
-                value: `Room ${this.props.index} | ${selectTime}`
+                selectTime
             }
             service.push(selectedItem)
             this.setState({ selected: service})
