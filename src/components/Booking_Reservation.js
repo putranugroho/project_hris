@@ -19,9 +19,6 @@ class Booking_Reservation extends Component {
         console.log(props.location.state.booking);
     }
 
-    componentDidUpdate(){
-    }
-
     confirmBooking = () => {
         const detail_booking = this.state.detail_booking
         const objCookie = cookie.get("userData")
