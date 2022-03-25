@@ -19,6 +19,7 @@ class RoomItem extends Component {
             if (time_slot[i].id === time) {
                 let selectTime = [
                     {
+                    time_slot_id: time_slot[i].id,
                     time_start: time_slot[i].time,
                     time_end: time_slot[i+1].time
                     }

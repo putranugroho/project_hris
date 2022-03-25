@@ -25,12 +25,13 @@ class Booking_Reservation extends Component {
         axios.post(
             `${Port}/booking`,
             {
-                detail_booking,
-                objCookie
+                detail_booking: detail_booking,
+                objCookie: objCookie
             }
         ).then( res => {
             if(res.data == 'error'){
                 alert('Error: ' + res.data)
+                console.log(res);
             } else {
                 alert(res.data)
                 this.setRedirect()
@@ -106,6 +107,11 @@ class Booking_Reservation extends Component {
         if (!addon[0]) {
             addon[0] = "none"
         }
+        date = date.split("-")
+        const a = date[0]
+        date[0] = date[1]
+        date[1] = a
+        date = date.join("/")
         return (
             <div className='px-5 card'>
                 <div className='mt-3 row'> 
@@ -149,7 +155,7 @@ class Booking_Reservation extends Component {
                             <div className="row mb-3">
                                 <div className="col-sm-3">
                                     <h3>Meeting Room</h3>
-                                    <h5>{ruangan}</h5>
+                                    <h5>{ruangan.name}</h5>
                                 </div>
                                 <div className="col-sm-3 border-2 border-start">
                                     <h3>Tanggal</h3>

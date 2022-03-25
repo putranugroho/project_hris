@@ -79,17 +79,28 @@ class Booking_Room extends Component {
         }
         let date = new Date(this.state.startDate)
         let month = date.getMonth()+1
-        date = `${month}-${date.getDate()}-${date.getFullYear()}`
+        if (month < 10) {
+            month = `0${month}`
+        }
+        let day = date.getDate()
+        if (day < 10) {
+            day = `0${day}`
+        }
+        date = `${month}-${day}-${date.getFullYear()}`
         let pic = this.pic.value
         let jabatan = this.jabatan.value
         let agenda = this.agenda.value
         let ruangan = ""
         for (let z = 0; z < this.state.ruangan.length; z++) {
             if (this.state.detail_service[0].ruangan_id === this.state.ruangan[z].room_id) {
-                ruangan = this.state.ruangan[z].roomname
+                ruangan = {
+                    id: this.state.ruangan[z].room_id,
+                    nama: this.state.ruangan[z].roomname
+                }
             }
         }
         let time = this.state.detail_service
+        let time_slot_id = []
         for (let i = 0; i < time.length; i++) {
             for (let j = 0; j < time.length; j++) {
                 if (time[j + 1]) {
@@ -100,17 +111,13 @@ class Booking_Room extends Component {
                     }
                 }
             }
+            time_slot_id.push(time[i].selectTime[0].time_slot_id)
         }
         time = `${time[0].selectTime[0].time_start} ~ ${time[time.length-1].selectTime[0].time_end}`
-        console.log(time);
         let payload = {
-            pic,jabatan,ruangan,time,nama,agenda,date,addon
+            pic,jabatan,ruangan,time,nama,agenda,date,addon,time_slot_id
         }
         this.setState({data_booking:payload,reservation:true})
-    }
-
-    componentDidMount(){
-        this.getRoom()
     }
 
     componentWillMount(){
@@ -122,7 +129,7 @@ class Booking_Room extends Component {
         this.renderBooking()
     }
 
-    getRoom = (tanggal) => {
+    getRoom = async (tanggal) => {
         let date = new Date(this.state.startDate)
         if (tanggal) {
             date = tanggal
@@ -136,10 +143,9 @@ class Booking_Room extends Component {
             day = `0${day}`
         }
         date = `${month}-${day}-${date.getFullYear()}`
-        axios.get(`${Port}/rooms?date=${date}`)
-          .then(res => {
-            this.setState({ruangan: res.data})
-            })
+        let res = await axios.get(`${Port}/rooms?date=${date}`)
+        let data = res.data;
+        this.setState({ruangan: data})
     }
 
     handleChange(e) {
@@ -368,7 +374,8 @@ class Booking_Room extends Component {
                     ruangan:data.ruangan,
                     time:data.time,
                     date:data.date,
-                    addon:data.addon
+                    addon:data.addon,
+                    time_slot_id:data.time_slot_id
                     }}
                 }}
             />
